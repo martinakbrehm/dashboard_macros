@@ -55,6 +55,3 @@ Dicas rápidas / problemas comuns
 - Verifique se os arquivos têm nome começando por `saida` e extensão `.xlsx`/`.xls`.
 - Se houver erro de import (biblioteca faltando), rode o comando de instalação acima.
 
-Se quiser, posso gerar um único executável (.exe) para Windows usando PyInstaller — diga se você prefere isso.
-
-
