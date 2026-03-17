@@ -1,0 +1,13 @@
+# Core data libraries
+pandas>=1.5
+openpyxl
+
+# Dash web app and plotting
+dash>=2.10
+plotly>=5.15
+
+# Optional for serving in production
+flask>=2.0
+
+# (Optional) plotting helpers - kept for backward compatibility
+matplotlib
