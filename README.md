@@ -4,54 +4,57 @@
 Este diretório contém o dashboard (aplicação web) usado para visualizar os
 resultados das extrações/consultas.
 
-O que o dashboard mostra
-- Resumo diário: total, sucessos, erros de requisição, ativos e inativos.
-- Distribuição de mensagens/erros: lista das mensagens mais frequentes.
-- Gráfico de erros: contagem de erros por dia ou por hora.
-- Tabelas filtráveis por data e por empresa (se a coluna `empresa` estiver presente).
+# Dashboard de Aproveitamento
 
-Regras de leitura dos arquivos
-- O dashboard carrega apenas arquivos Excel cujo nome COMEÇA com `saida` (ex.: `saida-entradas_01.xlsx`).
-- Aceita extensões `.xlsx` e `.xls`.
+Resumo curto
+- Visualiza resultados de extrações: resumo diário (total, sucesso, erros de requisição, ativos/inativos),
+	distribuição de mensagens/erros e gráfico de erros (por dia ou hora).
 
-Arquivos importantes
-- `dashboard.py` — aplicação Dash.
-- `run_dashboard_launcher.py` — launcher com interface para escolher a pasta de saída.
-- `run_dashboard.bat` — atalho para Windows que chama o launcher.
-- `.dashboard_config.json` — arquivo onde o launcher salva a pasta escolhida.
-- `requirements.txt` — lista de dependências Python.
+Principais regras de entrada
+- Lê somente arquivos Excel cujo nome COMEÇA com "saida" (case‑insensitive). Exemplos: `saida-2026-03.xlsx`.
+- Aceita extensões `.xlsx` e `.xls`. Arquivos temporários do Excel (`~$...`) são ignorados.
 
-Como executar (passo a passo)
+Onde estão os componentes
+- `dashboard.py` — aplicação Dash (UI).
+- `data/loader.py` — camada de dados (ponto único de leitura, resolve pasta de entrada).
+- `processing/processing.py` — funções de detecção/agregação de erros e mensagens.
+- `service/orchestrator.py` — orquestrador que monta as figuras e tabelas consumidas pelo UI.
+- `run_dashboard_launcher.py` & `run_dashboard.bat` — launcher GUI (escolhe pasta, inicia o servidor e abre o navegador).
 
-Opção A — GUI (Windows, recomendado):
-1. Abra a pasta `relatorio_aproveitamento` e dê duplo clique em `run_dashboard.bat`.
-2. Leia a mensagem e clique em "Escolher pasta". Selecione a pasta que contém os arquivos `saida-*.xlsx`.
-3. O launcher iniciará o servidor e, quando estiver pronto, abrirá automaticamente o navegador em `http://127.0.0.1:8050`.
+Como executar
+- Recomendado (GUI, Windows):
+	1) Abra `relatorio_aproveitamento\run_dashboard.bat` (ou execute `python run_dashboard_launcher.py`).
+	2) Selecione a pasta que contém os arquivos `saida-*.xlsx` quando solicitado.
+	3) O launcher inicia o servidor e abre: http://127.0.0.1:8050
 
-Opção B — Linha de comando:
-- Rodando o dashboard apontando a pasta:
+- Linha de comando (opcional):
+	- Passando a pasta explicitamente:
+		```powershell
+		python relatorio_aproveitamento\dashboard.py --pasta-saidas "C:\caminho\para\Arquivos"
+		```
+	- Ou exportando a variável de ambiente (PowerShell):
+		```powershell
+		$env:DASHBOARD_PASTA_SAIDAS = 'C:\caminho\para\Arquivos'
+		python relatorio_aproveitamento\dashboard.py
+		```
 
-```powershell
-python relatorio_aproveitamento\dashboard.py --pasta-saidas "C:\caminho\para\Arquivos"
-```
+Dependências
+- Instale com pip (virtualenv recomendado):
+	```powershell
+	python -m pip install -r relatorio_aproveitamento\requirements.txt
+	```
 
-- Ou definindo a variável de ambiente (PowerShell):
+Troubleshooting rápido
+- Se o navegador não abrir, acesse manualmente: http://127.0.0.1:8050
+- Confirme que os arquivos têm nome começando por `saida` e extensão `.xlsx`/`.xls`.
+- Se faltar alguma biblioteca, instale as dependências novamente com o comando acima.
 
-```powershell
-$env:DASHBOARD_PASTA_SAIDAS = 'C:\caminho\para\Arquivos'
-python relatorio_aproveitamento\dashboard.py
-```
+Próximos passos possíveis
+- Empacotar o launcher como .exe (PyInstaller) para distribuição sem Python.
+- Persistir agregados em banco caso deseje histórico e consultas mais rápidas.
 
-Instalação de dependências
-1. Recomenda-se usar um virtualenv.
-2. Instale as dependências:
+Se quiser, eu faço: gerar o .exe do launcher, ajustar `gerar_relatorio.py` para usar a mesma detecção de erros, ou adicionar testes unitários mínimos.
+Se quiser, posso gerar um único executável (.exe) para Windows usando PyInstaller — diga se você prefere isso.
 
-```powershell
-python -m pip install -r relatorio_aproveitamento\requirements.txt
-```
 
-Dicas rápidas / problemas comuns
-- Se o navegador não abrir, abra manualmente: http://127.0.0.1:8050
-- Verifique se os arquivos têm nome começando por `saida` e extensão `.xlsx`/`.xls`.
-- Se houver erro de import (biblioteca faltando), rode o comando de instalação acima.
 
