@@ -4,8 +4,6 @@
 Este diretório contém o dashboard (aplicação web) usado para visualizar os
 resultados das extrações/consultas.
 
-# Dashboard de Aproveitamento
-
 Resumo curto
 - Visualiza resultados de extrações: resumo diário (total, sucesso, erros de requisição, ativos/inativos),
 	distribuição de mensagens/erros e gráfico de erros (por dia ou hora).
